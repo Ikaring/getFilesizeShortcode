@@ -26,20 +26,25 @@ License: GPL2
 
 
 // Usage: [filesize url="http://wordpress.com/path/to/filename.pdf"]
-function get_filesize( $atts ) {
-	extract( shortcode_atts( array(
-		'url' => '',
-	), $atts ) );
 
+function ika_get_filesize( $atts ) {
+  // i18n
+  $plugin_dir = basename(dirname(__FILE__)) . '/languages';
+  load_plugin_textdomain( 'get_filesize_shortcode', false, $plugin_dir );
+  
+  extract( shortcode_atts( array(
+  	'url' => '',
+  ), $atts ) );
+  
     //Replace url to directory path
     $path = str_replace( site_url('/'), ABSPATH, $atts['url'] );
     
     if ( is_file( $path ) ){
       $filesize = size_format( filesize( $path ) );
     } else {
-      $filesize="ファイルがみつかりません";
+      $filesize=__( 'File not found!', 'get_filesize_shortcode');
     }
     return $filesize;
 
 }
-add_shortcode('filesize', 'get_filesize');
+add_shortcode('filesize', 'ika_get_filesize');
