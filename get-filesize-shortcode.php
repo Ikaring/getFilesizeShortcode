@@ -25,9 +25,9 @@ License: GPL2
 */
 
 
-// Usage: [filesize url="http://wordpress.com/path/to/filename.pdf"]
+// Usage: [filesize]http://wordpress.com/path/to/filename.pdf[/filesize]
 
-function ika_get_filesize( $atts ) {
+function ika_get_filesize( $atts, $content = null ) {
   // i18n
   load_plugin_textdomain(
     'get_filesize_shortcode',
@@ -40,7 +40,8 @@ function ika_get_filesize( $atts ) {
   ), $atts ) );
   
   //Replace url to directory path
-  $path = str_replace( site_url('/'), ABSPATH, $atts['url'] );
+  $path = str_replace( site_url('/'), ABSPATH, esc_url($content) );
+  var_dump($content);
   
   if ( is_file( $path ) ){
     $filesize = size_format( filesize( $path ) );
