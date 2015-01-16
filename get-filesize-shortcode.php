@@ -29,22 +29,25 @@ License: GPL2
 
 function ika_get_filesize( $atts ) {
   // i18n
-  $plugin_dir = basename(dirname(__FILE__)) . '/languages';
-  load_plugin_textdomain( 'get_filesize_shortcode', false, $plugin_dir );
+  load_plugin_textdomain(
+    'get_filesize_shortcode',
+    false,
+    dirname( plugin_basename( __FILE__ ) ).'/languages'
+  );
   
   extract( shortcode_atts( array(
   	'url' => '',
   ), $atts ) );
   
-    //Replace url to directory path
-    $path = str_replace( site_url('/'), ABSPATH, $atts['url'] );
-    
-    if ( is_file( $path ) ){
-      $filesize = size_format( filesize( $path ) );
-    } else {
-      $filesize=__( 'File not found!', 'get_filesize_shortcode');
-    }
-    return $filesize;
+  //Replace url to directory path
+  $path = str_replace( site_url('/'), ABSPATH, $atts['url'] );
+  
+  if ( is_file( $path ) ){
+    $filesize = size_format( filesize( $path ) );
+  } else {
+    $filesize=__( 'File not found!', 'get_filesize_shortcode');
+  }
+  return $filesize;
 
 }
 add_shortcode('filesize', 'ika_get_filesize');
